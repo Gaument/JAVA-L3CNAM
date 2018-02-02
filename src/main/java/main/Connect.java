@@ -106,7 +106,7 @@ public class Connect extends JFrame implements ActionListener{
 	 */
 	public JPanel getGifPanel(){
 		JPanel imgPanel = new JPanel();
-		ImageIcon icon = new ImageIcon("/home/gauthier/eclipseworkspace/Superchat/img/superman.gif");
+		ImageIcon icon = new ImageIcon("img/superman.gif");
 		JLabel img = new JLabel(icon);
 		imgPanel.add(img);
 		imgPanel.setBackground(Color.RED);
