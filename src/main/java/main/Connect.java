@@ -9,6 +9,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,9 +23,22 @@ import javax.swing.JTextField;
 
 
 public class Connect extends JFrame implements ActionListener{
+	
+	private Chat2 chatIRC;
+
+	JLabel serverLabel = new JLabel(" IP : ");
+
+	static JTextField serverField = new JTextField(20);
+
+	JLabel pseudoLabel = new JLabel("Pseudo : ");
+	JTextField pseudoField = new JTextField(20);
+
+	JButton okButton = new JButton("Se connecter");
+
+	JFrame view = new JFrame("SuperChat");
 	private String pseudoUser;
 	public Connect(){
-		super("Connection au Superchat");
+		super("Connexion au Superchat");
 		Container contents = getContentPane();
 		
 		contents.add(getConnectionChannel(), BorderLayout.NORTH);
@@ -34,18 +50,20 @@ public class Connect extends JFrame implements ActionListener{
 	 * @return le main pannel
 	 */
 	public JPanel getConnectionChannel() {
+		this.add(serverLabel);
+		this.add(serverField);
+
+		this.add(pseudoLabel);
+		this.add(pseudoField);
+
+		this.add(okButton);
+		
 		JPanel mainPanel = new JPanel();
 		JPanel southPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
 
 		mainPanel.setPreferredSize(new Dimension(600,150));
 		mainPanel.setBackground(Color.RED);
-		
-		JLabel pseudoLabel = new JLabel("Pseudo :");
-		JLabel serverLabel = new JLabel("IP :");
-
-		JTextField pseudoField = new JTextField();		
-		JTextField serverField = new JTextField();
 		
 		GridBagConstraints left = new GridBagConstraints();
 
@@ -63,40 +81,22 @@ public class Connect extends JFrame implements ActionListener{
 		okButton.setBackground(Color.blue);
 		okButton.setForeground(Color.black);
 		okButton.setPreferredSize(new Dimension(150,40));
+		okButton.addActionListener(this);
 		buttonPanel.add(okButton,left);
 		mainPanel.add(BorderLayout.SOUTH, buttonPanel);
 		
+		okButton.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {
+			}
 
-	    okButton.addActionListener(new ActionListener()
-	    {
-	      public void actionPerformed(ActionEvent e)
-	      {
-	    	  
-	    	  String serverAddress = serverField.getText();
-	    	  String pseudoUser    = pseudoField.getText();
-			  System.out.println(pseudoUser);
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+					Connexion();
+			}
 
-	    	  if(serverAddress.isEmpty() || pseudoUser.isEmpty()) {
-	    		  JOptionPane popup;      
-				  popup = new JOptionPane();
-				  JPanel panel = new JPanel();
-				  JLabel chanLabel = new JLabel("Champ(s) vide(s) !");
-				  panel.add(chanLabel);
-				  popup.showMessageDialog(null, panel, "Attention", JOptionPane.INFORMATION_MESSAGE, null);
-	    	  }else {
-	    		  System.out.println(pseudoUser);
-	    		  setVisible(false);
-	    		  final Chat window = new Chat();
-	    		  window.setLocationRelativeTo(null);
-	    		  window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    		  window.setResizable(false);
-	    		  window.setVisible(true);
-	    		  JPanel panel = new JPanel();
-	    		  window.setTitle("Superchat://" + serverAddress + "/" + pseudoUser);
-	    		  window.setuserPseudo(pseudoUser);	  
-	    	  }
-	      }
-	    });	    
+			public void keyReleased(KeyEvent e) {
+			}
+		});   
 		return mainPanel;
 
 	}
@@ -112,11 +112,6 @@ public class Connect extends JFrame implements ActionListener{
 		imgPanel.setBackground(Color.RED);
 		return imgPanel;
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-	}
 	/**
 	 * Getter et Setter du pseudo de l'user
 	 * @return pseudoUser
@@ -129,4 +124,41 @@ public class Connect extends JFrame implements ActionListener{
 		this.pseudoUser = pseudoUser;
 	}
 
+	public void Connexion() {
+
+		if (!serverField.getText().equals("") && !pseudoField.getText().equals("")) {
+
+			boolean b;
+			b = Pattern.matches(
+					"(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)",
+					serverField.getText());
+
+			if (b == true) {
+				Client.Connexion();
+				if (Client.getResultConnexion() != false) {
+					this.dispose();
+					view = new Chat3(serverField.getText(), pseudoField.getText());
+					view.setSize(700, 400);
+					view.setResizable(true);
+					view.setVisible(true);
+					view.setLocationRelativeTo(null);
+					Chat2.zoneDeTexte.setText("");
+				} else {
+					JOptionPane.showMessageDialog(this,
+							"Problème de connexion !");
+				}
+			} else {
+				JOptionPane.showMessageDialog(this, "IP incorrect !");
+			}
+		}
+	}
+
+	public static String getIP() {
+		return serverField.getText();
+	}
+
+	public void actionPerformed(ActionEvent arg0) {
+		Connexion();
+	}
+	
 }
