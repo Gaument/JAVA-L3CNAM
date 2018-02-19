@@ -13,6 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.OutputStreamWriter;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,59 +24,64 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
-public class Chat3 extends JFrame{
-	private Chat3 view;
+public class Chat3 extends JFrame {
+	private static final long serialVersionUID = 1L;
+	//	private Chat3 view;
 	private JButton sendMessage = new JButton("Envoyer");
+	public static JTextArea chatBox = new JTextArea();
+	private JPanel mainPanel = new JPanel();
 	public static JTextField messageBox = new JTextField();
-	private String pseudoUser;
 	
-    JTextArea   chatBox;
-
-	public Chat3(String IP, String Pseudo){
+	public Chat3(Client c){
 		
 		super("SuperChat IRC");
+		
 		Container contents = getContentPane();
 		
-		contents.add(getAllChat(), BorderLayout.CENTER);
+		contents.add(mainPanel, BorderLayout.CENTER);
 
 		pack(); setVisible(true);
-	}
-	/**
-	 * Block de la fenêtre de chat 
-	 * @return mainPanel
-	 */
-	public JPanel getAllChat(){
-		JPanel mainPanel = new JPanel();
+		setSize(700, 400);
+		setResizable(true);
+		setVisible(true);
+		setLocationRelativeTo(null);
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setPreferredSize(new Dimension(1000,400));
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new GridBagLayout());
-
+        
+//        this.addWindowListener(new FrameListener());
+//        
         messageBox.requestFocusInWindow();
         messageBox.setBackground(Color.YELLOW);
         messageBox.setForeground(Color.BLUE);
-
+        
         sendMessage.setBackground(Color.RED);
         sendMessage.setForeground(Color.WHITE);
-        sendMessage.addActionListener(new sendMessageButtonListener());
-        sendMessage.addKeyListener(new KeyListener() {
-			public void keyTyped(KeyEvent e) {
-				}
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-	                chatBox.append("<" + getuserPseudo() + ">:  " + messageBox.getText()
-                    		+ "\n");
-					messageBox.setText("");;
-				}
-			public void keyReleased(KeyEvent e) {
-				}
-		});
+        sendMessage.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent event) {
+            c.send("#MSG " + messageBox.getText());
+            messageBox.setText(null);
+            }
+        });
+//        sendMessage.addKeyListener(new KeyListener() {
+//			public void keyTyped(KeyEvent e) {
+//				}
+//			public void keyPressed(KeyEvent e) {
+//				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+//	                chatBox.append(Pseudo + " :#MSG" + messageBox.getText()
+//                    		+ "\n");
+//					messageBox.setText("");
+//				}
+//			public void keyReleased(KeyEvent e) {
+//				}
+//		});
 
-        chatBox = new JTextArea();
         chatBox.setEditable(false);
-        chatBox.setLineWrap(true);
+//        chatBox.setLineWrap(true);
 
         mainPanel.add(new JScrollPane(chatBox), BorderLayout.CENTER);
 
@@ -101,31 +109,18 @@ public class Chat3 extends JFrame{
 		channel.setForeground(Color.WHITE);
 		ChannelPan.add(channel);
 		mainPanel.add(BorderLayout.EAST, ChannelPan);
-        return mainPanel;
 
     }
 	
-	/**
-	 * Action listener sur boutton envoyer message
-	 *
-	 */
-    class sendMessageButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-                chatBox.append("<" + pseudoUser + ">:  " + messageBox.getText()
-                        + "\n");
-                messageBox.setText("");
-        }
-    }
-	/**
-	 * Getter et setter pseudo de l'user
-	 * @return pseudoUser
-	 */
-	public String getuserPseudo() {
-		return this.pseudoUser;
+	public void displayMsg(String msg){
+		chatBox.append(msg);
 	}
 	
-	public void setuserPseudo(String pseudoUser) {
-		this.pseudoUser = pseudoUser;
-	}
+	
+//	class FrameListener extends WindowAdapter {
+//		public void windowClosing(WindowEvent e) {
+//			Client.Deconnexion();
+//		}
+//	}
 
 }

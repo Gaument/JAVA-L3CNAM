@@ -22,21 +22,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
-public class Connect extends JFrame implements ActionListener{
+public class Connect extends JFrame implements ActionListener {
 	
-	private Chat2 chatIRC;
+	private JLabel serverLabel = new JLabel(" IP : ");
+	private JLabel pseudoLabel = new JLabel("Pseudo : ");
 
-	JLabel serverLabel = new JLabel(" IP : ");
+	private JTextField serverField = new JTextField(20);
+	private JTextField pseudoField = new JTextField(20);
 
-	static JTextField serverField = new JTextField(20);
+	private JButton okButton = new JButton("Se connecter");
 
-	JLabel pseudoLabel = new JLabel("Pseudo : ");
-	JTextField pseudoField = new JTextField(20);
-
-	JButton okButton = new JButton("Se connecter");
-
-	JFrame view = new JFrame("SuperChat");
-	private String pseudoUser;
 	public Connect(){
 		super("Connexion au Superchat");
 		Container contents = getContentPane();
@@ -45,6 +40,7 @@ public class Connect extends JFrame implements ActionListener{
 		contents.add(getGifPanel(), BorderLayout.CENTER);
 		pack(); setVisible(true);
 	}
+	
 	/**
 	 * Block de connection
 	 * @return le main pannel
@@ -116,13 +112,6 @@ public class Connect extends JFrame implements ActionListener{
 	 * Getter et Setter du pseudo de l'user
 	 * @return pseudoUser
 	 */
-	public String getUserPseudo() {
-		return pseudoUser;
-	}
-
-	public void setUserPseudo(String pseudoUser) {
-		this.pseudoUser = pseudoUser;
-	}
 
 	public void Connexion() {
 
@@ -134,15 +123,17 @@ public class Connect extends JFrame implements ActionListener{
 					serverField.getText());
 
 			if (b == true) {
-				Client.Connexion();
-				if (Client.getResultConnexion() != false) {
+				String pseudo = pseudoField.getText();
+				String ip = serverField.getText();
+				Client c = new Client(ip, pseudo);
+				
+				if (c.getResultConnexion() != false) {
 					this.dispose();
-					view = new Chat3(serverField.getText(), pseudoField.getText());
-					view.setSize(700, 400);
-					view.setResizable(true);
-					view.setVisible(true);
-					view.setLocationRelativeTo(null);
-					Chat2.zoneDeTexte.setText("");
+					c.send("#CONNECT " + pseudoField.getText());
+					c.send("#JOIN jaune");
+					c.start();
+
+					Chat3.chatBox.setText("");
 				} else {
 					JOptionPane.showMessageDialog(this,
 							"Problème de connexion !");
@@ -151,10 +142,6 @@ public class Connect extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(this, "IP incorrect !");
 			}
 		}
-	}
-
-	public static String getIP() {
-		return serverField.getText();
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
