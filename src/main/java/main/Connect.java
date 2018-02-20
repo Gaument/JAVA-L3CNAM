@@ -4,9 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -130,6 +128,7 @@ public class Connect extends JFrame implements ActionListener {
 				if (c.getResultConnexion() != false) {
 					this.dispose();
 					c.send("#CONNECT " + pseudoField.getText());
+					c.send("#CHANNELS");
 					c.send("#JOIN jaune");
 					c.start();
 

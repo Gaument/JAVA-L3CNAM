@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +20,7 @@ import org.apache.log4j.Logger;
 public class Client extends Thread {
 	private static final Logger LOG = Logger.getLogger(Main.class.getName());
 	
+//	private static Socket s = null;
 	private Socket s = null;
 	private Chat3 chat3;
 	private String msg;
@@ -47,32 +49,10 @@ public class Client extends Thread {
 		return bConn;
 	}
 
-	// }
+
 
 //	public static void Deconnexion() {
 //
-////		DAOUtils.close(bw);
-////		DAOUtils.close(osw);
-////		DAOUtils.close(out);
-////		DAOUtils.close(s);
-//		try {
-//			bw.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		try {
-//			osw.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		try {
-//			out.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 //		try {
 //			s.close();
 //		} catch (IOException e) {
@@ -82,7 +62,7 @@ public class Client extends Thread {
 //		LOG.info("Stop Socket & Stream Client");
 //
 //	}
-//	
+	
 
 	public boolean send(String mot) {
 		boolean reussite = true;		
