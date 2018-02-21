@@ -9,8 +9,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,9 +22,9 @@ import org.apache.log4j.Logger;
 public class Client extends Thread {
 	private static final Logger LOG = Logger.getLogger(Main.class.getName());
 	
-//	private static Socket s = null;
-	private Socket s = null;
-	private Chat3 chat3;
+	private static Socket s = null;
+//	private Socket s = null;
+	private static Chat chat;
 	private String msg;
 	
 	private static boolean bConn;
@@ -32,7 +34,7 @@ public class Client extends Thread {
 		try {
 			bConn = true;
 			s = new Socket(ip, 6667);
-			chat3 = new Chat3(this);
+			chat = new Chat(this);
 			
 			LOG.info("Start Socket Client");
 		} catch (UnknownHostException e) {
@@ -51,17 +53,17 @@ public class Client extends Thread {
 
 
 
-//	public static void Deconnexion() {
-//
-//		try {
-//			s.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		LOG.info("Stop Socket & Stream Client");
-//
-//	}
+	public static void Deconnexion() {
+
+		try {
+			s.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		LOG.info("Stop Socket & Stream Client");
+
+	}
 	
 
 	public boolean send(String mot) {
@@ -88,10 +90,32 @@ public class Client extends Thread {
 	}
 
 	public void displayMsg(String msg){
-		chat3.displayMsg(msg);
+		chat.displayMsg(msg);
 	
 	}
 
+	public static void channelsList(String str){
+		List<String> channelsList = new ArrayList<String>();
+		
+		try {
+            JSONObject jsonObj = new JSONObject(str);
+            if (jsonObj != null) {
+                JSONArray channelsJsonArray = jsonObj.getJSONArray("channels");
+               
+                for(int i = 0 ; i < channelsJsonArray.length();i++) {
+                	channelsList.add(channelsJsonArray.getString(i));
+                	chat.displayChannelsList(channelsJsonArray.getString(i));
+//                    System.out.println(channelsJsonArray.getString(i));
+                }                   
+            }
+           
+        }catch(JSONException e) {
+            e.printStackTrace();
+        }finally {
+            
+        }
+	}
+	
 	public void readMessage(){
 		InputStream in = null;
 		InputStreamReader isr = null;
@@ -113,7 +137,20 @@ public class Client extends Thread {
 					String pseudo = jsonObj.getJSONObject("message").getString("pseudo");
 					String content =jsonObj.getJSONObject("message").getString("content");
 				
-					chat3.displayMsg(pseudo + " : " + content + "\n");
+					chat.displayMsg(pseudo + " : " + content + "\n");
+				} else if (jsonObj.has("connect")){
+					String pseudo = jsonObj.getJSONObject("connect").getString("pseudo");
+					chat.displayMsg("Vous êtes connecté sous le pseudo : " + pseudo + "\n");
+				} else if (jsonObj.has("join")){
+					String channel = jsonObj.getJSONObject("join").getString("channel");
+					chat.displayMsg("Vous avez rejoint le channel : " + channel + "\n");
+				} else if (jsonObj.has("discochannel")){
+					String channel = jsonObj.getJSONObject("discochannel").getString("channel");
+					chat.displayMsg("Vous avez quitté le channel : " + channel + "\n");
+				} else if (jsonObj.has("discoserver")){
+					
+				} else if (jsonObj.has("channels")){
+					channelsList(msg);
 				}
 				
 				

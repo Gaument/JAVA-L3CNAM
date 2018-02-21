@@ -129,10 +129,9 @@ public class Connect extends JFrame implements ActionListener {
 					this.dispose();
 					c.send("#CONNECT " + pseudoField.getText());
 					c.send("#CHANNELS");
-					c.send("#JOIN jaune");
 					c.start();
 
-					Chat3.chatBox.setText("");
+					Chat.chatBox.setText("");
 				} else {
 					JOptionPane.showMessageDialog(this,
 							"Problème de connexion !");
