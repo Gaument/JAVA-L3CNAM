@@ -120,7 +120,7 @@ public class Chat extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				c.send("#EXIT");
 				Client.Deconnexion();
-				pack();setVisible(false);
+				dispose();
 				new Connect();
 			}
 		});

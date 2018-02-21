@@ -105,7 +105,6 @@ public class Client extends Thread {
                 for(int i = 0 ; i < channelsJsonArray.length();i++) {
                 	channelsList.add(channelsJsonArray.getString(i));
                 	chat.displayChannelsList(channelsJsonArray.getString(i));
-//                    System.out.println(channelsJsonArray.getString(i));
                 }                   
             }
            
@@ -153,95 +152,14 @@ public class Client extends Thread {
 					channelsList(msg);
 				}
 				
-				
-//				if(br.readLine() != null){	
-//					str = br.readLine();
-//					LOG.info("Message du client a convertir: " + str);
-//					displayMsg(str);
-//				}
 			}
 			
 		} catch (IOException e) {
 			LOG.error("Problème de connection: " + e);
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
 	
-	// private static Socket s = null;
-	// private static OutputStream out = null;
-	// private static OutputStreamWriter osw = null;
-	// private static BufferedWriter bw = null;
-	//
-	// public static void Connexion() {
-	// try {
-	//
-	// s = new Socket(Interface.getIP(), 6667);
-	// out = s.getOutputStream();
-	//
-	// osw = new OutputStreamWriter(out, "UTF-8");
-	// bw = new BufferedWriter(osw, 8192);
-	//
-	// } catch (IOException e) {
-	// LOG.error("Error during Socket manipulator", e);
-	// }
-	// }
-	//
-	// public static void EnvoiMessage(String msg) {
-	//
-	// try {
-	// //s = new Socket(Interface.getIP(), 6667);
-	// out = s.getOutputStream();
-	//
-	// osw = new OutputStreamWriter(out, "UTF-8");
-	// bw = new BufferedWriter(osw, 8192);
-	//
-	// bw.write(msg + "\n");
-	// bw.flush();
-	//
-	// } catch (IOException e) {
-	// LOG.error("Error during Socket manipulator", e);
-	// } finally {
-	// Utils.close(bw);
-	// Utils.close(osw);
-	// Utils.close(out);
-	// }
-	//
-	// }
-	// // }
-	//
-	// public static void Deconnexion() {
-	//
-	// Utils.close(bw);
-	// Utils.close(osw);
-	// Utils.close(out);
-	// Utils.close(s);
-	//
-	// }
-
-	// Ca marche !
-	// public static void EnvoiMessage(String msg) {
-	//
-	// try {
-	//
-	// s = new Socket(Interface.getIP(), 6667);
-	// out = s.getOutputStream();
-	// osw = new OutputStreamWriter(out, "UTF-8");
-	// bw = new BufferedWriter(osw, 8192);
-	//
-	// bw.write(msg);
-	// bw.flush();
-	//
-	// } catch (IOException e) {
-	// LOG.error("Error during Socket manipulator", e);
-	// } finally {
-	// Utils.close(bw);
-	// Utils.close(osw);
-	// Utils.close(out);
-	// Utils.close(s);
-	// // Utils.close(sc);
-	// }
-	// }
 }
