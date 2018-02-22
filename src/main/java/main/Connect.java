@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.regex.Pattern;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -136,15 +137,23 @@ public class Connect extends JFrame implements ActionListener {
 
 					Chat.chatBox.setText("");
 				} else {
-					JOptionPane.showMessageDialog(this,
-							"Problème de connexion !");
+					JOptionPane.showMessageDialog(this, "Problème de connexion !");
 				}
 			} else {
 				JOptionPane.showMessageDialog(this, "IP incorrect !");
 			}
-		}
+			
+			} else if (pseudoField.getText().equals("") && serverField.getText().equals("")) {
+				JOptionPane.showMessageDialog(this, "Champs vides !");
+			} else if (pseudoField.getText().equals("")) {
+				JOptionPane.showMessageDialog(this, "Veuillez choisir un pseudo !");
+			} else if (serverField.getText().equals("")) {
+				JOptionPane.showMessageDialog(this, "Veuillez renseigner une IP !");
+			}
+		
 	}
-
+	
+	
 	public void actionPerformed(ActionEvent arg0) {
 		Connexion();
 	}

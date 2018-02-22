@@ -40,6 +40,7 @@ public class Chat extends JFrame {
 	private static JButton quitChan = new JButton("Déconnecter");
 	private static JButton joinChan = new JButton("Joindre");
 	private static JButton createChan = new JButton("Créer");
+	private static JButton refreshChan = new JButton("Rafraichir");
 	
 	public Chat(Client c){
 		//Paramêtre et contenu de ma fenetre de chat
@@ -56,7 +57,6 @@ public class Chat extends JFrame {
 		setVisible(true);
 		setLocationRelativeTo(null);
         mainPanel.setLayout(new BorderLayout());
-        mainPanel.setPreferredSize(new Dimension(1000,400));
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new GridBagLayout());
@@ -67,7 +67,6 @@ public class Chat extends JFrame {
         messageBox.setBackground(Color.YELLOW);
         messageBox.setForeground(Color.BLUE);
         messageBox.setEditable(false);
-        
         quitChan.setEnabled(false);
         
         //listener sur le bouton envoyer msg
@@ -120,6 +119,9 @@ public class Chat extends JFrame {
 		//se déconnecter du serveur, renvoi sur la fenêtre de connexion Connect();
 		exit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+            	if (messageBox.isEditable()){
+            		c.send("#QUIT");
+            	}
 				c.send("#EXIT");
 				Client.Deconnexion();
 				dispose();
@@ -161,11 +163,22 @@ public class Chat extends JFrame {
 		cbCanaux.setEditable(false);
 		channel.setForeground(Color.WHITE);
 		
+		refreshChan.setPreferredSize(new Dimension(150,30));
+		refreshChan.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent event) {
+            		c.send("#CHANNELS");
+            }
+		});
+		
 		//Bouton pour joindre un channel selectionné dans la liste des channels de la combobox
 		joinChan.setPreferredSize(new Dimension(150,30));
 		joinChan.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event) {
+            	if (messageBox.isEditable()){
+            		c.send("#QUIT");
+            	}
             		String leChan = cbCanaux.getSelectedItem().toString();
+            		cbCanaux.requestFocus();
             		c.send("#JOIN " + leChan);
             		c.send("#CHANNELS");
             		messageBox.setEditable(true);
@@ -178,11 +191,10 @@ public class Chat extends JFrame {
 		quitChan.setPreferredSize(new Dimension(150,30));
 		quitChan.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event) {
-            		quitChan.setEnabled(false);
-            		joinChan.setEnabled(true);
-            		createChan.setEnabled(true);
-            		c.send("#QUIT");
-            		c.send("#CHANNELS");
+	        		c.send("#QUIT");
+	        		c.send("#CHANNELS");
+	        		quitChan.setEnabled(false);
+	        		createChan.setEnabled(true);
             		chatBox.setText(null);
             		messageBox.setText(null);
             		messageBox.setEditable(false);
@@ -206,10 +218,10 @@ public class Chat extends JFrame {
             	c.send("#JOIN " + chanField.getText());
             	c.send("#CHANNELS");
             	quitChan.setEnabled(true);
-            	joinChan.setEnabled(false);
             	createChan.setEnabled(false);
             	messageBox.setText(null);
             	messageBox.setEditable(true);
+            	joinChan.setEnabled(false);
             	} else {
             		JOptionPane.showMessageDialog(chatBox, "Champ Vide");
             	}
@@ -221,6 +233,7 @@ public class Chat extends JFrame {
 		ChannelPan.add(cbCanaux);
 		ChannelPan.add(joinChan);
 		ChannelPan.add(quitChan);
+		ChannelPan.add(refreshChan);
 		
 		mainPanel.add(BorderLayout.EAST, ChannelPan);
 
@@ -228,7 +241,9 @@ public class Chat extends JFrame {
 	
 	//afficher un msg dans la fenetre de chat
 	public void displayMsg(String msg){
-		chatBox.append(msg);
+		if (messageBox.isEditable()){
+			chatBox.append(msg);
+		}
 	}
 	
 	//afficher la liste des channels dans la combobox
@@ -236,9 +251,25 @@ public class Chat extends JFrame {
 		cbCanaux.addItem(msg);
 	}
 	
+	public void countChannelsList(){
+		if (cbCanaux.getItemCount() == 0){
+			joinChan.setEnabled(false);
+		} else {
+			joinChan.setEnabled(true);
+		}
+	}
+	
 	//vider le contenu de la liste afin de rafraichir celle-ci
 	public void emptyChannelsList(){
 		cbCanaux.removeAllItems();
+	}
+	
+	public void setDarkChannelsList(){
+		cbCanaux.setEnabled(false);
+	}
+	
+	public void setOkChannelsList(){
+		cbCanaux.setEnabled(true);
 	}
 	
 	//à la fermeture de la fenetre ça appel Deconnexion afin de fermer la socket

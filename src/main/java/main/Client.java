@@ -55,7 +55,25 @@ public class Client extends Thread {
 
 	//Ferme la socket lors de la fermeture du chat
 	public static void Deconnexion() {
-
+		
+//		try {
+//			bw.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		try {
+//			osw.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		try {
+//			out.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		try {
 			s.close();
 		} catch (IOException e) {
@@ -107,8 +125,14 @@ public class Client extends Thread {
                
                 for(int i = 0 ; i < channelsJsonArray.length();i++) {
                 	channelsList.add(channelsJsonArray.getString(i));
-                	chat.displayChannelsList(channelsJsonArray.getString(i));
-                }                   
+                	if (channelsJsonArray.getString(i).isEmpty()){
+                		chat.setDarkChannelsList();
+                	} else {
+                		chat.setOkChannelsList();
+                		chat.displayChannelsList(channelsJsonArray.getString(i));
+                	}
+                }         
+                chat.countChannelsList();
             }
            
         }catch(JSONException e) {
