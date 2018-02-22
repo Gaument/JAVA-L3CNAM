@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 
 public class Connect extends JFrame implements ActionListener {
 	
+	//création des composants
 	private JLabel serverLabel = new JLabel(" IP : ");
 	private JLabel pseudoLabel = new JLabel("Pseudo : ");
 
@@ -31,6 +32,7 @@ public class Connect extends JFrame implements ActionListener {
 	private JButton okButton = new JButton("Se connecter");
 
 	public Connect(){
+		//Ajout des parametres de la fenetre de connexion 
 		super("Connexion au Superchat");
 		Container contents = getContentPane();
 		
@@ -79,6 +81,7 @@ public class Connect extends JFrame implements ActionListener {
 		buttonPanel.add(okButton,left);
 		mainPanel.add(BorderLayout.SOUTH, buttonPanel);
 		
+		// Listener sur le bouton OK, si touche entrée ça fait l'action de Connexion()
 		okButton.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {
 			}
@@ -107,8 +110,8 @@ public class Connect extends JFrame implements ActionListener {
 		return imgPanel;
 	}
 	/**
-	 * Getter et Setter du pseudo de l'user
-	 * @return pseudoUser
+	 * test la connexion et les champs rempli par l'utilisateur
+	 * @return nouvelle fenetre de Chat
 	 */
 
 	public void Connexion() {

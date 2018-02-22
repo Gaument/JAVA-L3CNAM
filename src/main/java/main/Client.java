@@ -20,17 +20,18 @@ import org.apache.log4j.Logger;
 
 
 public class Client extends Thread {
+	
+	//composant de ma classe
 	private static final Logger LOG = Logger.getLogger(Main.class.getName());
 	
 	private static Socket s = null;
-//	private Socket s = null;
 	private static Chat chat;
 	private String msg;
 	
 	private static boolean bConn;
 
 	public Client(String ip, String pseudo) {
-		
+	//on récupère le pseudo et l'ip, si l'ip est ok et la connexion effectué on ouvre la socket	
 		try {
 			bConn = true;
 			s = new Socket(ip, 6667);
@@ -46,13 +47,13 @@ public class Client extends Thread {
 		}
 
 	}
-	
+	//résultat de Client, si true ça connecte le client au chat
 	public boolean getResultConnexion() {
 		return bConn;
 	}
 
 
-
+	//Ferme la socket lors de la fermeture du chat
 	public static void Deconnexion() {
 
 		try {
@@ -65,7 +66,7 @@ public class Client extends Thread {
 
 	}
 	
-
+	//envoi les msg avec la commande #MSG
 	public boolean send(String mot) {
 		boolean reussite = true;		
 		OutputStream out = null;
@@ -88,18 +89,20 @@ public class Client extends Thread {
 	public void run() {
 		readMessage(); 
 	}
-
+	
+	//lire les msg que renvoit le serveur dans le chat
 	public void displayMsg(String msg){
 		chat.displayMsg(msg);
-	
 	}
 
+	//récupère la liste des channels pour la mettre dans une ComboBox
 	public static void channelsList(String str){
 		List<String> channelsList = new ArrayList<String>();
 		
 		try {
             JSONObject jsonObj = new JSONObject(str);
             if (jsonObj != null) {
+            	chat.emptyChannelsList();
                 JSONArray channelsJsonArray = jsonObj.getJSONArray("channels");
                
                 for(int i = 0 ; i < channelsJsonArray.length();i++) {
@@ -115,6 +118,7 @@ public class Client extends Thread {
         }
 	}
 	
+	//récupère en json les msg envoyé par le serveur et leur contenu
 	public void readMessage(){
 		InputStream in = null;
 		InputStreamReader isr = null;
