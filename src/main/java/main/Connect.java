@@ -136,6 +136,7 @@ public class Connect extends JFrame implements ActionListener {
 
 			/*
 			 * regex for the serverField to test if ip = xxx.xxx.xx.xx
+			 * and to test if pseudo contains a-z A-Z and 0-9 only, no special char or space
 			 * 
 			 * */
 			boolean p1;
