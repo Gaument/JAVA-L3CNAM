@@ -17,7 +17,13 @@ public class DAOUser extends DAO<User> {
 	protected DAOUser(Connection c) {
 		super(c);
 	}
-
+	
+	/*
+	 * method to find user
+	 * @param Object id
+	 * @return User
+	 * 
+	 * */	
 	@Override
 	public User find(Object id) throws DAOException {
 		final String sql = "SELECT * FROM users WHERE `id`= ?";
@@ -57,6 +63,12 @@ public class DAOUser extends DAO<User> {
 		}
 	}
 
+	/*
+	 * method to create user
+	 * @param User obj
+	 * @return User
+	 * 
+	 * */	
 	@Override
 	public User create(User obj) throws DAOException {
 		final String sql = "INSERT INTO users VALUES(NULL, ?)";
@@ -86,6 +98,12 @@ public class DAOUser extends DAO<User> {
 		}
 	}
 
+	/*
+	 * method to update user
+	 * @param User obj
+	 * @return obj
+	 * 
+	 * */
 	@Override
 	public User update(User obj) throws DAOException {
 		final String sql = "UPDATE users SET `pseudo`= ? WHERE `id`= ?";
@@ -108,6 +126,11 @@ public class DAOUser extends DAO<User> {
 		}
 	}
 
+	/*
+	 * method to delete user
+	 * @param User obj
+	 * 
+	 * */
 	@Override
 	public void delete(User obj) throws DAOException {
 		final String sql = "DELETE FROM users WHERE `id`= ? ";

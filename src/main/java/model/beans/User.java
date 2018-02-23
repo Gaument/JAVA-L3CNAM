@@ -21,23 +21,39 @@ public class User {
 		this.id = id;
 	}
 
-
+	/**
+	 * @return the pseudo
+	 */
 	public String getPseudo() {
 		return pseudo;
 	}
-
+	
+	/**
+	 * @param pseudo the id to pseudo
+	 */
 	public void setPseudo(String pseudo) {
 		this.pseudo = pseudo;
 	}
 
+	/**
+	 * @return the message list
+	 */
 	public List<Message> getMessage() {
 		return message;
 	}
 
+	/**
+	 * @param message list the id to message list
+	 */
 	public void setMessage(List<Message> message) {
 		this.message = message;
 	}
 	
+	/*
+	 * equals method
+	 * @param Object o
+	 * @return boolean
+	 * */
 	@Override
 	public boolean equals(Object o){
 		if(!(o instanceof User)){

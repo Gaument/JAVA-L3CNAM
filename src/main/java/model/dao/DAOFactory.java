@@ -12,6 +12,11 @@ public class DAOFactory {
 		// Useless
 	}
 
+	/*
+	 * Connect to the database
+	 * @return boolean
+	 * 
+	 * */
 	public static Connection getConnection() throws DAOException {
 		Connection c;
 
@@ -33,7 +38,6 @@ public class DAOFactory {
 	}
 
 	public static DAOMessage getDAOMessage(Connection c) {
-		// TODO Auto-generated method stub
 		return new DAOMessage(c);
 	}
 	
