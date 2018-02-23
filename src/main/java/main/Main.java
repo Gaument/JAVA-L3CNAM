@@ -1,12 +1,14 @@
 package main;
 /**
  * 
- * @author gauthier clement et fanny lartaud
+ * @author gauthier clement, fanny lartaud
  *
  */
 public class Main {
 	public static void main(String[] args) {
-		// On ouvre la fenêtre de connexion
+		/*Open the Connect window
+		 * 
+		 * */
 		new Connect();
 	}
 }

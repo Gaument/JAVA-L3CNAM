@@ -23,7 +23,10 @@ import javax.swing.JTextField;
 
 public class Connect extends JFrame implements ActionListener {
 	
-	//création des composants
+	/*
+	 * create component of the connect window
+	 * 
+	 * */
 	private JLabel serverLabel = new JLabel(" IP : ");
 	private JLabel pseudoLabel = new JLabel("Pseudo : ");
 
@@ -33,7 +36,10 @@ public class Connect extends JFrame implements ActionListener {
 	private JButton okButton = new JButton("Se connecter");
 
 	public Connect(){
-		//Ajout des parametres de la fenetre de connexion 
+		/*
+		 * get component of the Connect window
+		 * 
+		 * */
 		super("Connexion au Superchat");
 		Container contents = getContentPane();
 		
@@ -43,13 +49,16 @@ public class Connect extends JFrame implements ActionListener {
 	}
 	
 	/**
-	 * Block de connection
-	 * @return le main pannel
+	 * main block of the connect window
+	 * @return JPanel mainPannel
 	 */
 	public JPanel getConnectionChannel() {
+		/*
+		 * add component to the connection block
+		 * 
+		 * */
 		this.add(serverLabel);
 		this.add(serverField);
-
 		this.add(pseudoLabel);
 		this.add(pseudoField);
 
@@ -68,12 +77,15 @@ public class Connect extends JFrame implements ActionListener {
 		
 		pseudoField.setPreferredSize(new Dimension(170,50));
 		serverField.setPreferredSize(new Dimension(170,50));
+		
 		southPanel.add(pseudoLabel,right);
 		southPanel.add(pseudoField, right);
 		southPanel.add(serverLabel, right);
 		southPanel.add(serverField, right);
 		southPanel.setBackground(Color.yellow);
+		
 		mainPanel.add(BorderLayout.SOUTH, southPanel);
+		
 		JButton okButton = new JButton("OK");
 		okButton.setBackground(Color.blue);
 		okButton.setForeground(Color.black);
@@ -82,7 +94,10 @@ public class Connect extends JFrame implements ActionListener {
 		buttonPanel.add(okButton,left);
 		mainPanel.add(BorderLayout.SOUTH, buttonPanel);
 		
-		// Listener sur le bouton OK, si touche entrée ça fait l'action de Connexion()
+		/*
+		 * action listener that calls the connexion method on press 
+		 * 
+		 * */
 		okButton.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {
 			}
@@ -98,8 +113,8 @@ public class Connect extends JFrame implements ActionListener {
 		return mainPanel;
 
 	}
-	/**
-	 * Récuperer le GIF
+	/** getGifPanel
+	 * get the superman gif url
 	 * @return imgPanel
 	 */
 	public JPanel getGifPanel(){
@@ -110,15 +125,19 @@ public class Connect extends JFrame implements ActionListener {
 		imgPanel.setBackground(Color.RED);
 		return imgPanel;
 	}
-	/**
-	 * test la connexion et les champs rempli par l'utilisateur
-	 * @return nouvelle fenetre de Chat
+	
+	/* connexion
+	 * test if textfields are empty or correctly filled
+	 * 
 	 */
-
 	public void Connexion() {
 
 		if (!serverField.getText().equals("") && !pseudoField.getText().equals("")) {
 
+			/*
+			 * regex for the serverField to test if ip = xxx.xxx.xx.xx
+			 * 
+			 * */
 			boolean b;
 			b = Pattern.matches(
 					"(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)",

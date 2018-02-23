@@ -29,21 +29,29 @@ import javax.swing.JTextField;
 
 public class Chat extends JFrame {
 	
-	//Composant de la fenêtre de chat
+	/*
+	 * Component of the Chat window
+	 * 
+	 * */
 	private static final long serialVersionUID = 1L;
-	private JButton sendMessage = new JButton("Envoyer");
-	public static JTextArea chatBox = new JTextArea();
-	public static JComboBox<String> cbCanaux = new JComboBox<String>();
-	private JPanel mainPanel = new JPanel();
-	private JMenuBar menuBar = new JMenuBar();
-	public static JTextField messageBox = new JTextField();
 	private static JButton quitChan = new JButton("Déconnecter");
 	private static JButton joinChan = new JButton("Joindre");
 	private static JButton createChan = new JButton("Créer");
 	private static JButton refreshChan = new JButton("Rafraichir");
+	private JButton sendMessage = new JButton("Envoyer");
+	private JPanel mainPanel = new JPanel();
+	private JMenuBar menuBar = new JMenuBar();
+	public static JTextArea chatBox = new JTextArea();
+	public static JComboBox<String> cbCanaux = new JComboBox<String>();
+	public static JTextField messageBox = new JTextField();
+
 	
 	public Chat(Client c){
-		//Paramêtre et contenu de ma fenetre de chat
+		
+		/*
+		 * Settings of the Chat window 
+		 * 
+		 * */
 		super("SuperChat IRC");
 		
 		Container contents = getContentPane();
@@ -57,9 +65,6 @@ public class Chat extends JFrame {
 		setVisible(true);
 		setLocationRelativeTo(null);
         mainPanel.setLayout(new BorderLayout());
-
-        JPanel southPanel = new JPanel();
-        southPanel.setLayout(new GridBagLayout());
         
         this.addWindowListener(new FrameListener());
         
@@ -67,9 +72,23 @@ public class Chat extends JFrame {
         messageBox.setBackground(Color.YELLOW);
         messageBox.setForeground(Color.BLUE);
         messageBox.setEditable(false);
-        quitChan.setEnabled(false);
         
-        //listener sur le bouton envoyer msg
+        /*
+         * set default settings to component
+         * 
+         * */
+        quitChan.setEnabled(false);
+        chatBox.setEditable(false);
+        chatBox.setLineWrap(true);
+
+        mainPanel.add(new JScrollPane(chatBox), BorderLayout.CENTER);
+        
+        
+        /*
+         * action listener on the send msg button and enter key
+         * if true, send the msg with #MSG, popup with a message 
+         * 
+         * */
         sendMessage.setBackground(Color.RED);
         sendMessage.setForeground(Color.WHITE);
         sendMessage.addActionListener(new ActionListener(){
@@ -99,13 +118,10 @@ public class Chat extends JFrame {
 				}
 		});
 
-
-        chatBox.setEditable(false);
-        chatBox.setLineWrap(true);
-
-        mainPanel.add(new JScrollPane(chatBox), BorderLayout.CENTER);
-        
-        //ajout des composants de la barre de menu en haut de la fenêtre
+        /*
+         * Adding a menu bar to the window
+         * 
+         * */
 		menuBar.setPreferredSize(new Dimension(200,20));
 		
 		JMenu fichier = new JMenu("Menu");
@@ -116,7 +132,11 @@ public class Chat extends JFrame {
 		fichier.add(quitter);
 		menuBar.add(fichier);
 
-		//se déconnecter du serveur, renvoi sur la fenêtre de connexion Connect();
+		/*
+		 * Action listener on the exit button, which quit a channel if user is in, and exit the serveur,
+		 * close the socket and open a new Connect Window
+		 *  
+		 * */
 		exit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
             	if (messageBox.isEditable()){
@@ -128,15 +148,21 @@ public class Chat extends JFrame {
 				new Connect();
 			}
 		});
-		//fermer totalement le programme
+		
+		/*
+		 * Totally close the program
+		 * 
+		 * */
 		quitter.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Client.Deconnexion();
 				System.exit(0);
-
 			}
 		});
         
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new GridBagLayout());
+		
         GridBagConstraints left = new GridBagConstraints();
         left.anchor = GridBagConstraints.LINE_START;
         left.fill = GridBagConstraints.HORIZONTAL;
@@ -150,11 +176,19 @@ public class Chat extends JFrame {
         right.weightx = 1.0D;
         right.weighty = 1.0D;
         
-        //ajout des composant de panel situé en bas de la fenêtre, entre-autre le bouton envoyé et la zone de texte
+        /*
+         * Adding textfield and button to the window using gridbadconstraints
+         * and adding this panel to the mainPanel
+         * 
+         * */
         southPanel.add(messageBox, left);
         southPanel.add(sendMessage, right);
-        
         mainPanel.add(BorderLayout.SOUTH, southPanel);
+        
+        /*
+         * Adding component to the main panel and create pannel chan
+         * 
+         * */
         JPanel ChannelPan = new JPanel();
         ChannelPan.setPreferredSize(new Dimension(200,400));
         ChannelPan.setBackground(Color.BLUE);
@@ -163,6 +197,10 @@ public class Chat extends JFrame {
 		cbCanaux.setEditable(false);
 		channel.setForeground(Color.WHITE);
 		
+		/*
+		 * action listener on refresh button, refresh the channels list
+		 * 
+		 * */
 		refreshChan.setPreferredSize(new Dimension(150,30));
 		refreshChan.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event) {
@@ -170,7 +208,10 @@ public class Chat extends JFrame {
             }
 		});
 		
-		//Bouton pour joindre un channel selectionné dans la liste des channels de la combobox
+		/*
+		 * Action listener on the join button, who join the selected channel of the combobox
+		 * 
+		 * */
 		joinChan.setPreferredSize(new Dimension(150,30));
 		joinChan.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event) {
@@ -187,7 +228,11 @@ public class Chat extends JFrame {
             		quitChan.setEnabled(true);
             }
 		});
-		//bouton permetant de quitter le channel où on se trouve
+		
+		/*
+		 * action listener on the quit button, uses to quit a channel 
+		 * 
+		 * */
 		quitChan.setPreferredSize(new Dimension(150,30));
 		quitChan.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event) {
@@ -200,7 +245,11 @@ public class Chat extends JFrame {
             		messageBox.setEditable(false);
             }
 		});
-		//bouton permetant de créer un channel
+		
+		/*
+		 * action listener on the create channel button, create and join the channel 
+		 * 
+		 * */
 		createChan.setPreferredSize(new Dimension(150,30));
 		createChan.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent event) {
@@ -214,7 +263,7 @@ public class Chat extends JFrame {
             	pan.add(chanField);
             	
             	jop.showMessageDialog(null, pan, "Créer un channel", JOptionPane.INFORMATION_MESSAGE, null);
-            	if (!chanField.getText().isEmpty()){
+            	if (!chanField.getText().isEmpty() && !containsWhiteSpace(chanField.getText())){
             	c.send("#JOIN " + chanField.getText());
             	c.send("#CHANNELS");
             	quitChan.setEnabled(true);
@@ -223,11 +272,15 @@ public class Chat extends JFrame {
             	messageBox.setEditable(true);
             	joinChan.setEnabled(false);
             	} else {
-            		JOptionPane.showMessageDialog(chatBox, "Champ Vide");
+            		JOptionPane.showMessageDialog(chatBox, "Champ vide ou contient des espaces !");
             	}
             }
 		});
-		//ajout des composants du panel de channels
+		
+		/*
+		 * Adding component to the chan panel
+		 * 
+		 * */
 		ChannelPan.add(channel);
 		ChannelPan.add(createChan);
 		ChannelPan.add(cbCanaux);
@@ -235,35 +288,58 @@ public class Chat extends JFrame {
 		ChannelPan.add(quitChan);
 		ChannelPan.add(refreshChan);
 		
+		/*
+		 * Adding the chan panel on east of the mainPanel
+		 * 
+		 * */
 		mainPanel.add(BorderLayout.EAST, ChannelPan);
 
     }
 	
-	//afficher un msg dans la fenetre de chat
+	/* display a msg sent by others in the chat box
+	 * @param String msg
+	 * 
+	 * */
 	public void displayMsg(String msg){
 		if (messageBox.isEditable()){
 			chatBox.append(msg);
 		}
 	}
 	
-	//afficher la liste des channels dans la combobox
+	/* Add the channels list to the combo box
+	 * @param String msg
+	 * 
+	 * */
 	public void displayChannelsList(String msg){
 		cbCanaux.addItem(msg);
 	}
 	
+	/*
+	 * count how many channel are in the list
+	 * 
+	 * */
 	public void countChannelsList(){
-		if (cbCanaux.getItemCount() == 0){
+		if (cbCanaux.getItemCount() == 1 && messageBox.isEditable()){
+			joinChan.setEnabled(false);
+		} else if (cbCanaux.getItemCount() == 0){
 			joinChan.setEnabled(false);
 		} else {
 			joinChan.setEnabled(true);
 		}
 	}
 	
-	//vider le contenu de la liste afin de rafraichir celle-ci
+	/* 
+	 * empty the channels list to refresh it
+	 * 
+	 * */
 	public void emptyChannelsList(){
 		cbCanaux.removeAllItems();
 	}
 	
+	/*
+	 * set enabled or not the chan list if the is more than 0 chan
+	 * 
+	 * */
 	public void setDarkChannelsList(){
 		cbCanaux.setEnabled(false);
 	}
@@ -272,7 +348,27 @@ public class Chat extends JFrame {
 		cbCanaux.setEnabled(true);
 	}
 	
-	//à la fermeture de la fenetre ça appel Deconnexion afin de fermer la socket
+	/*containsWhiteSpace
+	 * test if there is space in the channels name on creation
+	 * @param String testCode
+	 * @return boolean
+	 * 
+	 * */
+	public static boolean containsWhiteSpace(final String testCode){
+	    if(testCode != null){
+	        for(int i = 0; i < testCode.length(); i++){
+	            if(Character.isWhitespace(testCode.charAt(i))){
+	                return true;
+	            }
+	        }
+	    }
+	    return false;
+	}
+	
+	/*
+	 * On close: close the socket, the outputstream, the bufferedwriter and the outputstreamwriter
+	 * 
+	 * */
 	class FrameListener extends WindowAdapter {
 		public void windowClosing(WindowEvent e) {
 			Client.Deconnexion();

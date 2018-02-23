@@ -21,17 +21,26 @@ import org.apache.log4j.Logger;
 
 public class Client extends Thread {
 	
-	//composant de ma classe
+	/*
+	 * Component of the Client Class
+	 * 
+	 * */
 	private static final Logger LOG = Logger.getLogger(Main.class.getName());
 	
 	private static Socket s = null;
+	private static OutputStream out = null;
+	private static OutputStreamWriter osw = null;
+	private static BufferedWriter bw = null;
 	private static Chat chat;
 	private String msg;
 	
 	private static boolean bConn;
 
 	public Client(String ip, String pseudo) {
-	//on récupère le pseudo et l'ip, si l'ip est ok et la connexion effectué on ouvre la socket	
+	/*Client
+	 *New socket client using ip and pseudo 
+	 * 
+	 * */	
 		try {
 			bConn = true;
 			s = new Socket(ip, 6667);
@@ -47,33 +56,40 @@ public class Client extends Thread {
 		}
 
 	}
-	//résultat de Client, si true ça connecte le client au chat
+	
+	/*getResultConnexion
+	 * @return boolean
+	 * 
+	 * */
 	public boolean getResultConnexion() {
 		return bConn;
 	}
 
 
-	//Ferme la socket lors de la fermeture du chat
+	/*Deconnection
+	 * Close socket, bufferedwriter, outputstream and outputstreamwriter
+	 * 
+	 * */
 	public static void Deconnexion() {
 		
-//		try {
-//			bw.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		try {
-//			osw.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		try {
-//			out.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			osw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		try {
 			s.close();
 		} catch (IOException e) {
@@ -84,12 +100,14 @@ public class Client extends Thread {
 
 	}
 	
-	//envoi les msg avec la commande #MSG
+	/*send
+	 *@param String mot
+	 *@return boolean
+	 * 
+	 * */
 	public boolean send(String mot) {
 		boolean reussite = true;		
-		OutputStream out = null;
-		OutputStreamWriter osw = null;
-		BufferedWriter bw = null;
+
 		try {
 			out = s.getOutputStream();
 			osw = new OutputStreamWriter(out, "UTF-8");
@@ -104,16 +122,28 @@ public class Client extends Thread {
 		return reussite;
 	}
 	
+	/*run
+	 * used to read the msg sent by users or server
+	 * 
+	 * */
 	public void run() {
 		readMessage(); 
 	}
 	
-	//lire les msg que renvoit le serveur dans le chat
+	/*displayMsg
+	 * @param String msg
+	 * send the msg to the chatbox
+	 * 
+	 * */
 	public void displayMsg(String msg){
 		chat.displayMsg(msg);
 	}
 
-	//récupère la liste des channels pour la mettre dans une ComboBox
+	/*channelsList
+	 * @param String str
+	 * get the channels list with the command #channels
+	 * 
+	 * */
 	public static void channelsList(String str){
 		List<String> channelsList = new ArrayList<String>();
 		
@@ -142,7 +172,10 @@ public class Client extends Thread {
         }
 	}
 	
-	//récupère en json les msg envoyé par le serveur et leur contenu
+	/*readMessage
+	 * get the messages from the serveur sent in json
+	 * 
+	 **/
 	public void readMessage(){
 		InputStream in = null;
 		InputStreamReader isr = null;
