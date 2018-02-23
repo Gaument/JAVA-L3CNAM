@@ -19,6 +19,12 @@ public class DAOMessage extends DAO<Message> {
 		super(c);
 	}
 	
+	/*
+	 * @param User u
+	 * @return LinkedList
+	 * 
+	 * */
+	
 	public List<Message> listMessageFromUser (User u) throws DAOException{
 		final String sql="SELECT * FROM message WHERE author = ?";
 		final List<Message> messageList = new LinkedList<>();
@@ -43,7 +49,13 @@ public class DAOMessage extends DAO<Message> {
 			DAOUtils.close(st);
 		}
 	}
-
+	
+	/*
+	 * method to find message
+	 * @param Object id
+	 * @return Message
+	 * 
+	 * */
 	@Override
 	public Message find(Object id) throws DAOException {
 		final String sql = "SELECT * FROM message WHERE `id`= ? ";
@@ -79,6 +91,13 @@ public class DAOMessage extends DAO<Message> {
 		}
 	}
 
+	
+	/*
+	 * method to create message
+	 * @param Message obj
+	 * @return Message
+	 * 
+	 * */
 	@Override
 	public Message create(Message obj) throws DAOException {
 		final String sql = "INSERT INTO message VALUES(NULL, ? , ?)";
@@ -109,6 +128,12 @@ public class DAOMessage extends DAO<Message> {
 		}
 	}
 
+	/*
+	 * method to update message
+	 * @param Message obj
+	 * @return Message
+	 * 
+	 * */
 	@Override
 	public Message update(Message obj) throws DAOException {
 		final String sql = "UPDATE message SET `id_user`= ? , `content`= ? WHERE `id`= ? ";
@@ -131,6 +156,11 @@ public class DAOMessage extends DAO<Message> {
 		}
 	}
 
+	/*
+	 * method to delete message
+	 * @param Message obj
+	 * 
+	 * */
 	@Override
 	public void delete(Message obj) throws DAOException {
 		final String sql = "DELETE FROM message WHERE `id`= ? ";

@@ -14,6 +14,9 @@ public class DAOUtils {
 		// Useless
 	}
 	
+	/*
+	 * @param Connection c
+	 * */
 	public static void close(Connection c){
 		try {
 			if (c != null){
@@ -24,6 +27,9 @@ public class DAOUtils {
 		}
 	}
 	
+	/*
+	 * @param Statement st
+	 * */
 	public static void close(Statement st){
 		try {
 			if (st != null){
@@ -34,6 +40,9 @@ public class DAOUtils {
 		}
 	}
 	
+	/*
+	 * @param @ResultSet r
+	 * */
 	public static void close(ResultSet r){
 		try {
 			if (r != null){

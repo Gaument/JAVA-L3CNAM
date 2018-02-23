@@ -33,14 +33,26 @@ public class Message {
 	public void setIdUser(int idUser) {
 		this.idUser = idUser;
 	}
-
+	
+	/**
+	 * @return the content
+	 */
 	public String getContent() {
 		return content;
 	}
-
+	
+	/**
+	 * @param content the content to set
+	 */
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+	/*
+	 * equals method
+	 * @param Object o
+	 * @return boolean
+	 * */
 	@Override
 	public boolean equals(Object o){
 		if(!(o instanceof Message)){
