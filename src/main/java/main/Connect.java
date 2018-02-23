@@ -138,25 +138,32 @@ public class Connect extends JFrame implements ActionListener {
 			 * regex for the serverField to test if ip = xxx.xxx.xx.xx
 			 * 
 			 * */
-			boolean b;
-			b = Pattern.matches(
+			boolean p1;
+			boolean p2;
+			
+			p1 = Pattern.matches(
 					"(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)",
 					serverField.getText());
+			p2 = Pattern.matches("^[a-zA-Z0-9_]*$", pseudoField.getText());
 
-			if (b == true) {
+			if (p1 == true) {
+				if (p2 == true){
 				String pseudo = pseudoField.getText();
 				String ip = serverField.getText();
 				Client c = new Client(ip, pseudo);
 				
-				if (c.getResultConnexion() != false) {
-					this.dispose();
-					c.send("#CONNECT " + pseudoField.getText());
-					c.send("#CHANNELS");
-					c.start();
-
-					Chat.chatBox.setText("");
+					if (c.getResultConnexion() != false) {
+						this.dispose();
+						c.send("#CONNECT " + pseudoField.getText());
+						c.send("#CHANNELS");
+						c.start();
+	
+						Chat.chatBox.setText("");
+					} else {
+						JOptionPane.showMessageDialog(this, "Problème de connexion !");
+					}
 				} else {
-					JOptionPane.showMessageDialog(this, "Problème de connexion !");
+					JOptionPane.showMessageDialog(this, "Pseudo incorrect !");
 				}
 			} else {
 				JOptionPane.showMessageDialog(this, "IP incorrect !");
@@ -171,7 +178,6 @@ public class Connect extends JFrame implements ActionListener {
 			}
 		
 	}
-	
 	
 	public void actionPerformed(ActionEvent arg0) {
 		Connexion();
