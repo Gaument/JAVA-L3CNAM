@@ -117,7 +117,7 @@ public class Chat extends JFrame {
 			public void keyReleased(KeyEvent e) {
 				}
 		});
-
+        
         /*
          * Adding a menu bar to the window
          * 
